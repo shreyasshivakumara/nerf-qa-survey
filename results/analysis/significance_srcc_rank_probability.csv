@@ -1,0 +1,43 @@
+dataset,metric,p_first,p_top3
+Explicit-NeRF-QA,PSNR,0.0,0.0
+Explicit-NeRF-QA,SSIM,0.0,0.0
+Explicit-NeRF-QA,MS-SSIM,0.0,0.0
+Explicit-NeRF-QA,CW-SSIM,0.0,0.0
+Explicit-NeRF-QA,FSIM,0.0,0.0
+Explicit-NeRF-QA,VIF,0.0,0.4935
+Explicit-NeRF-QA,LPIPS,0.0,0.3775
+Explicit-NeRF-QA,LPIPS-VGG,0.0,0.001
+Explicit-NeRF-QA,LPIPS+,0.0,0.8795
+Explicit-NeRF-QA,DISTS,1.0,1.0
+Explicit-NeRF-QA,FLIP,0.0,0.0
+Explicit-NeRF-QA,VMAF,0.0,0.078
+Explicit-NeRF-QA,FovVideoVDP,0.0,0.0
+Explicit-NeRF-QA,STRRED,0.0,0.0005
+Explicit-NeRF-QA,NIQE,0.0,0.0
+Explicit-NeRF-QA,PIQE,0.0,0.0245
+Explicit-NeRF-QA,MANIQA,0.0,0.0005
+Explicit-NeRF-QA,MUSIQ,0.0,0.145
+Explicit-NeRF-QA,CGVQM-2,0.0,0.0
+Explicit-NeRF-QA,CGVQM-5,0.0,0.0
+Explicit-NeRF-QA,NVS-SQA,0.0,0.0
+Martin et al.,PSNR,0.0,0.0
+Martin et al.,SSIM,0.0,0.0
+Martin et al.,MS-SSIM,0.0,0.0
+Martin et al.,CW-SSIM,0.0085,0.751
+Martin et al.,FSIM,0.0,0.0
+Martin et al.,VIF,0.0,0.003
+Martin et al.,LPIPS,0.0,0.0075
+Martin et al.,LPIPS-VGG,0.0,0.0
+Martin et al.,LPIPS+,0.034,0.214
+Martin et al.,DISTS,0.215,0.893
+Martin et al.,FLIP,0.0,0.0
+Martin et al.,VMAF,0.001,0.004
+Martin et al.,FovVideoVDP,0.0,0.0
+Martin et al.,STRRED,0.0,0.0035
+Martin et al.,NIQE,0.0,0.0045
+Martin et al.,PIQE,0.0,0.006
+Martin et al.,MANIQA,0.0005,0.118
+Martin et al.,MUSIQ,0.741,0.9955
+Martin et al.,CGVQM-2,0.0,0.0
+Martin et al.,CGVQM-5,0.0,0.0
+Martin et al.,NVS-SQA,0.0,0.0

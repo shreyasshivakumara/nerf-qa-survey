@@ -1,0 +1,7 @@
+work/
+third_party/cgvqm/
+third_party/vmaf/
+__pycache__/
+*.pyc
+.DS_Store
+*.log

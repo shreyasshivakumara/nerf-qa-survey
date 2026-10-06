@@ -1,0 +1,8 @@
+date: 2026-10-02T13:46:18+02:00
+cpu: Intel(R) Core(TM) i7-14700KF, 28 threads
+ram: 62 GB
+gpu: NVIDIA GeForce RTX 4090, 24564 MiB, 560.35.05
+os: Ubuntu 22.04.5 LTS
+python: Python 3.11.7
+torch: 2.3.1+cu121 cuda 12.1
+ffmpeg: ffmpeg version 4.4.2-0ubuntu0.22.04.1 Copyright (c) 2000-2021 the FFmpeg developers
