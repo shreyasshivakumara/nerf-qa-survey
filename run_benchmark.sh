@@ -23,4 +23,3 @@ for g in pyiqa flip fvvdp cgvqm nvssqa vmaf; do
   echo "== $g"; $PY $S/compute_metrics.py $g "$V" "$L" "$OUT" --shard 0/21 --limit 20
 done
 echo "== strred"; $PY_STRRED $S/compute_metrics.py strred "$V" "$L" "$OUT" --shard 0/21 --limit 20
-echo "summarise with: python scripts/make_runtime_table.py $OUT <out.tex>"

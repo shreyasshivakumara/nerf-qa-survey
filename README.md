@@ -26,7 +26,7 @@ scripts/                analysis scripts
 environment/            pinned Python packages (two environments)
 third_party/setup.sh    fetches CGVQM and VMAF at the versions used
 results/benchmark/      per-video runtime and peak GPU memory, system configuration
-results/analysis/       bootstrap statistics, LaTeX tables, Fig. 4
+results/analysis/       bootstrap statistics, point estimates, significance, Fig. 4
 results/gsqa/           3DGS pilot: SRCC with CIs, significance, figure
 results/cgvqm_max/      CGVQM with max patch pooling
 results/nvssqa/         NVS-SQA encoder features and analysis

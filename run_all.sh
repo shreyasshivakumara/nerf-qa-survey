@@ -43,10 +43,7 @@ fi
 
 echo "== bootstrap and tables"
 $PY $S/bootstrap.py $D/explicit_420.csv $D/martin_32.csv $A
-$PY $S/make_tables.py $D/explicit_420.csv $D/martin_32.csv $A/bootstrap_statistics.csv $A
 $PY $S/make_significance_table.py $D/explicit_420.csv $D/martin_32.csv $A/significance_srcc.csv
-$PY $S/make_sensitivity_table.py $D/martin_32.csv $A/bootstrap_statistics.csv $A/point_estimates.csv $A/table_sensitivity.tex
-$PY $S/make_runtime_table.py $REPO/results/benchmark $A/table_runtime.tex
 $PY $S/make_fig4.py $A $A/point_estimates.csv $A/fig4_bootstrap_srcc
 
 echo "== supplementary checks"
