@@ -46,7 +46,6 @@ results/nvssqa/         NVS-SQA encoder features and analysis
 The subjective scores come from these datasets; please cite them when using the data.
 Metric column names: `psnr, psnry, ssim, cw_ssim, ms_ssim, fsim, lpips, lpips-vgg, dists, vif,
 lpips+, niqe, piqe, maniqa, musiq, vmaf, fovvideovdp, flip, nvs_sqa, strred, cgvqm_2, cgvqm_5`
-(PSNR-Y is included but not analysed).
 
 ## Reproducing the tables
 
