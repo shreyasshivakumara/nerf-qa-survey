@@ -22,7 +22,7 @@ pilot study on 3D Gaussian Splatting (GS-QA).
 data/                   per-video subjective and metric scores (three datasets)
 run_all.sh              reproduce all tables
 run_benchmark.sh        runtime / GPU-memory benchmark
-scripts/                pipeline (see below)
+scripts/                analysis scripts
 environment/            pinned Python packages (two environments)
 third_party/setup.sh    fetches CGVQM and VMAF at the versions used
 results/benchmark/      per-video runtime and peak GPU memory, system configuration
