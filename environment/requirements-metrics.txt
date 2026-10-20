@@ -14,3 +14,5 @@ opencv-python==4.10.0.84
 scikit-image==0.22.0
 ffmpeg-python==0.2.0
 av==18.1.0
+scikit-learn==1.2.2
+matplotlib==3.8.0

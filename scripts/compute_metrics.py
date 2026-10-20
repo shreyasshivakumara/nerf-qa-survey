@@ -51,6 +51,8 @@ ap.add_argument("--workers", type=int, default=1)
 ap.add_argument("--shard", default="0/1", help="i/n: process every n-th video starting at i (parallel runs)")
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ap.add_argument("--cgvqm-dir", default=os.path.join(REPO, "third_party", "cgvqm"))
+ap.add_argument("--cgvqm-pool", default="mean", choices=["mean", "max"],
+                help="CGVQM patch pooling (mean in the main analysis, max in the supplementary check)")
 ap.add_argument("--vmaf-model", default=os.path.join(REPO, "third_party", "vmaf", "model", "vmaf_v0.6.1.json"))
 args = ap.parse_args()
 
@@ -176,7 +178,7 @@ def run_cgvqm():
         rows = []
         for label, typ in [("cgvqm_2", CGVQM_TYPE.CGVQM_2), ("cgvqm_5", CGVQM_TYPE.CGVQM_5)]:
             stop = gpu_timer()
-            q, _ = cg(test_p, ref_p, cgvqm_type=typ, device="cuda", patch_pool="mean", patch_scale=4)
+            q, _ = cg(test_p, ref_p, cgvqm_type=typ, device="cuda", patch_pool=args.cgvqm_pool, patch_scale=4)
             sec, mem = stop()
             rows.append(dict(video=name, metric=label, score=float(q.item()), seconds=sec, peak_gpu_mb=mem))
         write_rows(rows)

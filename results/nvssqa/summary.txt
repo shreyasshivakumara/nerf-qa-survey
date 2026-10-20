@@ -1,0 +1,14 @@
+[explicit] scene share, NVS-SQA scores      0.682
+[explicit] scene share, subjective scores   0.064
+[explicit] scene share, MUSIQ               0.111
+[explicit] within-scene SRCC, NVS-SQA       0.792
+[explicit] pooled SRCC, NVS-SQA             0.169
+[explicit] refitted head, NVS-SQA           0.083
+[explicit] refitted head, DISTS             0.951
+[martin] scene share, NVS-SQA scores      0.729
+[martin] scene share, subjective scores   0.084
+[martin] scene share, MUSIQ               0.038
+[martin] within-scene SRCC, NVS-SQA       0.750
+[martin] pooled SRCC, NVS-SQA             0.280
+[martin] refitted head, NVS-SQA           0.167
+[martin] refitted head, DISTS             0.799

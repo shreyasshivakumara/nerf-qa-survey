@@ -1,0 +1,4 @@
+[explicit] cgvqm_2  mean pooling SRCC 0.770   max pooling SRCC 0.741
+[explicit] cgvqm_5  mean pooling SRCC 0.800   max pooling SRCC 0.780
+[martin] cgvqm_2  mean pooling SRCC 0.298   max pooling SRCC 0.152
+[martin] cgvqm_5  mean pooling SRCC 0.369   max pooling SRCC 0.397

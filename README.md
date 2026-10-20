@@ -7,24 +7,29 @@ Code and data for the comparative study in
 
 The study evaluates 21 objective quality metrics (full-reference, no-reference
 and NeRF-specific) against subjective scores on two public NeRF datasets, with
-scene-level bootstrap confidence intervals and paired significance tests.
+scene-level bootstrap confidence intervals and paired significance tests, plus a
+pilot study on 3D Gaussian Splatting (GS-QA).
 
 | Dataset | Content | Videos | Scenes | Subjective scores |
 |---|---|---|---|---|
 | [Explicit-NeRF-QA](https://github.com/YukeXing/Explicit-NeRF-QA) | synthetic, 360° | 420 rated (of 440) | 21 | MOS, 0–10 |
 | [NVS-QA, Martin et al.](https://github.com/pedrogcmartin/NVS-QA), real-world part | Tanks and Temples (360°) + front-facing real | 32 | 8 | DMOS, 1–5 → MOS, 0–10 |
+| [GS-QA, Martin et al.](https://github.com/pedrogcmartin/GS-QA) (3DGS pilot) | same 8 scenes as NVS-QA, 8 Gaussian Splatting methods | 64 | 8 | DMOS, 1–5 → MOS, 0–10 |
 
 ## Repository layout
 
 ```
-data/                   per-video subjective and metric scores (both datasets)
+data/                   per-video subjective and metric scores (three datasets)
 run_all.sh              reproduce all tables
 run_benchmark.sh        runtime / GPU-memory benchmark
 scripts/                pipeline (see below)
 environment/            pinned Python packages (two environments)
 third_party/setup.sh    fetches CGVQM and VMAF at the versions used
 results/benchmark/      per-video runtime and peak GPU memory, system configuration
-results/analysis/       bootstrap statistics and LaTeX tables
+results/analysis/       bootstrap statistics, LaTeX tables, Fig. 4
+results/gsqa/           3DGS pilot: SRCC with CIs, significance, figure
+results/cgvqm_max/      CGVQM with max patch pooling
+results/nvssqa/         NVS-SQA encoder features and analysis
 ```
 
 ## Data
@@ -36,6 +41,7 @@ results/analysis/       bootstrap statistics and LaTeX tables
 |---|---|---|
 | `data/explicit_420.csv` | 420 | [Explicit-NeRF-QA](https://github.com/YukeXing/Explicit-NeRF-QA) (MOS as released) |
 | `data/martin_32.csv` | 32 | [NVS-QA, Martin et al.](https://github.com/pedrogcmartin/NVS-QA), real-world part (MOS = 2.5 (DMOS − 1)) |
+| `data/gsqa_64.csv` | 64 | [GS-QA, Martin et al.](https://github.com/pedrogcmartin/GS-QA) (MOS = 2.5 (DMOS − 1)) |
 
 The subjective scores come from these datasets; please cite them when using the data.
 Metric column names: `psnr, psnry, ssim, cw_ssim, ms_ssim, fsim, lpips, lpips-vgg, dists, vif,
@@ -44,7 +50,7 @@ lpips+, niqe, piqe, maniqa, musiq, vmaf, fovvideovdp, flip, nvs_sqa, strred, cgv
 
 ## Reproducing the tables
 
-Only NumPy, SciPy and pandas are needed (versions in `environment/requirements-metrics.txt`):
+Only NumPy, SciPy, pandas, scikit-learn and Matplotlib are needed (versions in `environment/requirements-metrics.txt`):
 
 ```
 bash run_all.sh
@@ -60,12 +66,24 @@ Outputs in `results/analysis/`:
 | `table_sensitivity.tex` | real-world CIs when resampling scenes, videos or methods |
 | `table_fit_convergence.tex` | convergence of the 4-parameter logistic fit |
 | `table_runtime.tex` | runtime and peak GPU memory per metric |
+| `fig4_bootstrap_srcc.pdf`, `bootstrap_samples_*.npz` | bootstrap SRCC distributions (Fig. 4) |
+
+Supplementary checks and the 3DGS pilot:
+
+| File | Content |
+|---|---|
+| `results/gsqa/gsqa_vs_nvsqa_srcc.csv`, `fig_gs_vs_nerf.pdf` | SRCC and 95% CIs on GS-QA (3DGS) and NVS-QA (NeRF), same scenes |
+| `results/gsqa/gsqa_significance.csv`, `gsqa_rank_probability.csv` | paired bootstrap tests and rank probabilities on GS-QA |
+| `results/gsqa/summary.txt` | console summary, per-viewpoint SRCC, check against the authors' metric values |
+| `results/cgvqm_max/summary.txt` | CGVQM SRCC with mean vs max patch pooling |
+| `results/nvssqa/summary.txt` | NVS-SQA scene share, within-scene SRCC, refitted regression head |
 
 ### Recomputing the metric scores (optional)
 
 1. Download the datasets: Explicit-NeRF-QA from its
    [project page](https://github.com/YukeXing/Explicit-NeRF-QA) (folder with `MOS.xlsx` and
    `Videos/`), and `git clone https://github.com/pedrogcmartin/NVS-QA`.
+   `git clone https://github.com/pedrogcmartin/GS-QA` for the 3DGS pilot.
 2. Create the two Python environments (Python 3.11.7, CUDA 12.1); ST-RRED needs an older NumPy:
    ```
    python -m venv envs/metrics && envs/metrics/bin/pip install -r environment/requirements-metrics.txt
@@ -76,7 +94,7 @@ Outputs in `results/analysis/`:
 4. Recompute everything and rebuild `data/` (about a day on one RTX 4090):
    ```
    PY=envs/metrics/bin/python PY_STRRED=envs/strred/bin/python \
-     bash run_all.sh full <Explicit-NeRF-QA dir> <NVS-QA dir>
+     bash run_all.sh full <Explicit-NeRF-QA dir> <NVS-QA dir> <GS-QA dir>
    ```
 
 ## Pipeline
@@ -84,11 +102,13 @@ Outputs in `results/analysis/`:
 | Step | Script | Notes |
 |---|---|---|
 | 1 | `prepare_explicit_videos.py` | Each Explicit-NeRF-QA video shows reference (left) and test rendering (right). Both 800×800 halves are written losslessly (H.264, QP 0, yuv444p), pixel-identical to the dataset video. Each test video is compared with its own reference half. |
-| 1 | `prepare_martin_videos.py` | Links the released 928×522 videos (no re-encoding); converts DMOS to MOS (below). |
+| 1 | `prepare_martin_videos.py`, `prepare_gsqa_videos.py` | Link the released 928×522 videos (no re-encoding); convert DMOS to MOS (below). |
 | 2 | `compute_metrics.py` | Metric groups `pyiqa`, `flip`, `fvvdp`, `cgvqm`, `nvssqa`, `vmaf`, `strred`; resumable, records runtime and GPU memory. |
 | 3 | `build_merged.py` | Joins metric and subjective scores by video name into `data/*.csv`; stops on any missing or duplicate value. |
 | 4 | `bootstrap.py` | Scene-level cluster bootstrap, 2,000 resamples, seed 42. |
-| 5 | `make_tables.py`, `make_significance_table.py`, `make_sensitivity_table.py`, `make_runtime_table.py` | Tables. |
+| 5 | `make_tables.py`, `make_significance_table.py`, `make_sensitivity_table.py`, `make_runtime_table.py`, `make_fig4.py` | Tables and Fig. 4. |
+| 6 | `gsqa_analysis.py`, `make_fig_gs_vs_nerf.py` | 3DGS pilot on GS-QA, compared with NVS-QA on the same scenes. |
+| 6 | `cgvqm_pooling.py`, `nvssqa_analysis.py` | Supplementary analyses of the NeRF-specific metrics. |
 
 `scripts/common.py` holds the metric list, the correlation measures and the dataset labels.
 

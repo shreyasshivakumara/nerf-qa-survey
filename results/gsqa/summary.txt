@@ -1,0 +1,61 @@
+SRCC [95% CI]           GS-QA (3DGS)              NVS-QA (NeRF, same scenes)
+  STRRED        0.879 [0.682, 0.952]     0.593 [0.256, 0.868]
+  LPIPS+        0.867 [0.657, 0.942]     0.760 [0.590, 0.906]
+  LPIPS         0.864 [0.684, 0.945]     0.673 [0.561, 0.823]
+  FSIM          0.807 [0.583, 0.952]     0.264 [0.049, 0.603]
+  FovVideoVDP   0.797 [0.549, 0.920]     0.443 [0.131, 0.779]
+  MS-SSIM       0.796 [0.538, 0.944]     0.350 [0.059, 0.694]
+  VMAF          0.781 [0.493, 0.913]     0.503 [0.148, 0.828]
+  SSIM          0.739 [0.442, 0.947]     0.220 [-0.028, 0.517]
+  CGVQM-5       0.720 [0.334, 0.938]     0.369 [0.146, 0.677]
+  CGVQM-2       0.696 [0.421, 0.942]     0.298 [0.001, 0.633]
+  PSNR          0.678 [0.347, 0.912]     0.390 [0.032, 0.708]
+  DISTS         0.678 [0.228, 0.899]     0.835 [0.658, 0.940]
+  VIF           0.651 [0.381, 0.873]     0.495 [0.148, 0.832]
+  MANIQA        0.647 [0.141, 0.863]     0.726 [0.618, 0.855]
+  MUSIQ         0.558 [0.000, 0.874]     0.865 [0.735, 0.937]
+  PIQE          0.556 [0.120, 0.808]     0.688 [0.455, 0.872]
+  FLIP          0.528 [0.138, 0.855]     0.372 [0.111, 0.676]
+  CW-SSIM       0.486 [-0.064, 0.856]     0.815 [0.672, 0.919]
+  LPIPS-VGG     0.334 [-0.225, 0.799]     0.569 [0.360, 0.785]
+  NVS-SQA       0.161 [-0.363, 0.661]     0.280 [0.114, 0.535]
+  NIQE          -0.285 [-0.697, 0.483]     0.530 [0.415, 0.755]
+
+rank agreement of metrics between datasets: SRCC -0.134
+
+rank probability (GS-QA, top 5 by p_first):
+dataset metric  p_first  p_top3
+  GS-QA STRRED   0.3350  0.6520
+  GS-QA LPIPS+   0.2480  0.6555
+  GS-QA  LPIPS   0.1515  0.5700
+  GS-QA   FSIM   0.1135  0.2695
+  GS-QA  DISTS   0.0465  0.1485
+GS-QA | STRRED: significantly better than 5/20 (Bonferroni), 8 uncorrected; not different from ['LPIPS+', 'LPIPS', 'FSIM', 'FovVideoVDP', 'MS-SSIM', 'VMAF', 'SSIM', 'CGVQM-5', 'CGVQM-2', 'PSNR', 'DISTS', 'LPIPS-VGG']; significantly worse than []
+GS-QA | LPIPS+: significantly better than 3/20 (Bonferroni), 5 uncorrected; not different from ['STRRED', 'LPIPS', 'FSIM', 'FovVideoVDP', 'MS-SSIM', 'VMAF', 'SSIM', 'CGVQM-5', 'CGVQM-2', 'PSNR', 'DISTS', 'VIF', 'MANIQA', 'MUSIQ', 'FLIP']; significantly worse than []
+GS-QA | DISTS: significantly better than 1/20 (Bonferroni), 2 uncorrected; not different from ['STRRED', 'LPIPS+', 'LPIPS', 'FSIM', 'FovVideoVDP', 'MS-SSIM', 'VMAF', 'SSIM', 'CGVQM-5', 'CGVQM-2', 'PSNR', 'VIF', 'MANIQA', 'MUSIQ', 'PIQE', 'FLIP', 'CW-SSIM', 'NVS-SQA']; significantly worse than []
+GS-QA | MUSIQ: significantly better than 1/20 (Bonferroni), 4 uncorrected; not different from ['LPIPS+', 'FovVideoVDP', 'VMAF', 'SSIM', 'CGVQM-5', 'CGVQM-2', 'PSNR', 'DISTS', 'VIF', 'MANIQA', 'PIQE', 'FLIP', 'CW-SSIM', 'LPIPS-VGG', 'NVS-SQA', 'NIQE']; significantly worse than ['STRRED', 'LPIPS', 'FSIM', 'MS-SSIM']
+NVS-QA | MUSIQ: significantly better than 16/20 (Bonferroni), 18 uncorrected; not different from ['DISTS', 'LPIPS+']; significantly worse than []
+NVS-QA | DISTS: significantly better than 11/20 (Bonferroni), 16 uncorrected; not different from ['MUSIQ', 'CW-SSIM', 'LPIPS+', 'MANIQA']; significantly worse than []
+
+GS-QA per viewpoint SRCC (n=32 each):
+  PSNR       360 0.814   FF 0.620
+  MS-SSIM    360 0.909   FF 0.660
+  CW-SSIM    360 0.764   FF 0.062
+  FSIM       360 0.943   FF 0.667
+  LPIPS+     360 0.871   FF 0.761
+  DISTS      360 0.937   FF 0.427
+  VMAF       360 0.759   FF 0.635
+  MANIQA     360 0.500   FF 0.549
+  MUSIQ      360 0.718   FF 0.076
+  NVS-SQA    360 -0.046   FF 0.423
+
+check vs authors' metrics.xlsx (64 videos matched), SRCC between our and their values:
+  PSNR-Y   1.000
+  SSIM     0.999
+  MS-SSIM  0.993
+  FSIM     0.999
+  VIF      0.933
+  LPIPS    0.873
+  DISTS    0.921
+  VMAF     1.000
+  FVVDP    1.000

@@ -8,7 +8,8 @@ intervals. The number of resamples in which the 4-parameter logistic fit
 failed (see common.correlations) is recorded per metric.
 
 Writes <out_dir>/bootstrap_statistics.csv: mean and 95% CI per dataset,
-metric and measure, and the number of failed fits.
+metric and measure, and the number of failed fits, and
+<out_dir>/bootstrap_samples_<dataset>.npz: the SRCC of every resample (for Fig. 4).
 
 Usage: python bootstrap.py <explicit_csv> <martin_csv> <out_dir>
 """
@@ -47,11 +48,13 @@ if __name__ == '__main__':
     explicit_csv, martin_csv, out_dir = sys.argv[1:4]
     os.makedirs(out_dir, exist_ok=True)
     stats = []
+    samples = {}
     for key, csv in [('explicit', explicit_csv), ('martin', martin_csv)]:
         df = pd.read_csv(csv)
         print(f"{key}: {len(df)} videos, {df['Scene'].nunique()} scenes", flush=True)
         for col, (name, hib, _) in METRICS.items():
             dist, failed = scene_bootstrap(df, col, hib)
+            samples.setdefault(key, {})[name] = dist['srcc']
             row = dict(Dataset=key, Metric=name, fit_failures=failed)
             for k, d in dist.items():
                 row.update({f"{k.upper()}_mean": np.mean(d), f"{k.upper()}_ci_low": np.percentile(d, 2.5),
@@ -60,3 +63,5 @@ if __name__ == '__main__':
             print(f"  {name:12s} SRCC {row['SRCC_mean']:.3f} [{row['SRCC_ci_low']:.3f}, {row['SRCC_ci_high']:.3f}]"
                   f"  fit failures {failed}/{N_BOOTSTRAP}", flush=True)
     pd.DataFrame(stats).to_csv(os.path.join(out_dir, 'bootstrap_statistics.csv'), index=False)
+    for key, d in samples.items():
+        np.savez(os.path.join(out_dir, f'bootstrap_samples_{key}.npz'), **d)
