@@ -62,25 +62,6 @@ lpips+, niqe, piqe, maniqa, musiq, vmaf, fovvideovdp, flip, nvs_sqa, strred, cgv
 
 `scripts/common.py` holds the metric list, the correlation measures and the dataset labels.
 
-## Analysis details
-
-- **Correlations.** SRCC and KRCC on raw scores; PLCC and RMSE after a 4-parameter
-  logistic mapping (linear fallback if the fit does not converge; failed or
-  flat fits are counted in `table_fit_convergence.tex`). Lower-is-better metrics (LPIPS, LPIPS-VGG, LPIPS+,
-  DISTS, FLIP, STRRED, NIQE, PIQE) are negated. The real-world dataset is
-  reported with SRCC and KRCC only.
-- **Bootstrap.** Scenes are resampled with replacement; a scene drawn *k* times
-  contributes its videos *k* times. 95% percentile intervals.
-- **Significance.** The two best metrics per dataset are compared with every other
-  metric on the same resamples; Bonferroni correction for 20 comparisons.
-- **Subjective scales.** Explicit-NeRF-QA: MOS on 0–10. Martin et al. collected
-  ratings on 0–100, converted them to 1–5 and report DMOS = MOS<sub>syn</sub> − MOS<sub>ref</sub> + 5
-  (higher is better; 5 = reference quality). We map this linearly onto 0–10:
-  MOS = 2.5 (DMOS − 1). Rank correlations do not depend on this mapping.
-- **No spatial-shift compensation** is applied to either dataset. Martin et al.
-  additionally report results with disparity compensation, so their image-metric
-  values differ from ours; their VMAF and FovVideoVDP values match ours.
-
 ## Metric implementations
 
 | Metric(s) | Implementation | Settings |
