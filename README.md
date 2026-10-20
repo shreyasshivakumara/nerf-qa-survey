@@ -47,21 +47,6 @@ The subjective scores come from these datasets; please cite them when using the 
 Metric column names: `psnr, psnry, ssim, cw_ssim, ms_ssim, fsim, lpips, lpips-vgg, dists, vif,
 lpips+, niqe, piqe, maniqa, musiq, vmaf, fovvideovdp, flip, nvs_sqa, strred, cgvqm_2, cgvqm_5`
 
-## Pipeline
-
-| Step | Script | Notes |
-|---|---|---|
-| 1 | `prepare_explicit_videos.py` | Each Explicit-NeRF-QA video shows reference (left) and test rendering (right). Both 800×800 halves are written losslessly (H.264, QP 0, yuv444p), pixel-identical to the dataset video. Each test video is compared with its own reference half. |
-| 1 | `prepare_martin_videos.py`, `prepare_gsqa_videos.py` | Link the released 928×522 videos (no re-encoding); convert DMOS to MOS (below). |
-| 2 | `compute_metrics.py` | Metric groups `pyiqa`, `flip`, `fvvdp`, `cgvqm`, `nvssqa`, `vmaf`, `strred`; resumable, records runtime and GPU memory. |
-| 3 | `build_merged.py` | Joins metric and subjective scores by video name into `data/*.csv`; stops on any missing or duplicate value. |
-| 4 | `bootstrap.py` | Scene-level cluster bootstrap, 2,000 resamples, seed 42. |
-| 5 | `make_tables.py`, `make_significance_table.py`, `make_sensitivity_table.py`, `make_runtime_table.py`, `make_fig4.py` | Tables and Fig. 4. |
-| 6 | `gsqa_analysis.py`, `make_fig_gs_vs_nerf.py` | 3DGS pilot on GS-QA, compared with NVS-QA on the same scenes. |
-| 6 | `cgvqm_pooling.py`, `nvssqa_analysis.py` | Supplementary analyses of the NeRF-specific metrics. |
-
-`scripts/common.py` holds the metric list, the correlation measures and the dataset labels.
-
 ## Metric implementations
 
 | Metric(s) | Implementation | Settings |
