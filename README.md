@@ -47,55 +47,6 @@ The subjective scores come from these datasets; please cite them when using the 
 Metric column names: `psnr, psnry, ssim, cw_ssim, ms_ssim, fsim, lpips, lpips-vgg, dists, vif,
 lpips+, niqe, piqe, maniqa, musiq, vmaf, fovvideovdp, flip, nvs_sqa, strred, cgvqm_2, cgvqm_5`
 
-## Reproducing the tables
-
-Only NumPy, SciPy, pandas, scikit-learn and Matplotlib are needed (versions in `environment/requirements-metrics.txt`):
-
-```
-bash run_all.sh
-```
-
-Outputs in `results/analysis/`:
-
-| File | Content |
-|---|---|
-| `table_main.tex`, `point_estimates.csv` | SRCC, KRCC, PLCC, RMSE on the full data (Table 5) |
-| `table_ci.tex`, `bootstrap_statistics.csv` | 95% scene-bootstrap confidence intervals |
-| `significance_srcc.csv`, `significance_srcc_rank_probability.csv` | paired bootstrap tests, rank probabilities |
-| `table_sensitivity.tex` | real-world CIs when resampling scenes, videos or methods |
-| `table_fit_convergence.tex` | convergence of the 4-parameter logistic fit |
-| `table_runtime.tex` | runtime and peak GPU memory per metric |
-| `fig4_bootstrap_srcc.pdf`, `bootstrap_samples_*.npz` | bootstrap SRCC distributions (Fig. 4) |
-
-Supplementary checks and the 3DGS pilot:
-
-| File | Content |
-|---|---|
-| `results/gsqa/gsqa_vs_nvsqa_srcc.csv`, `fig_gs_vs_nerf.pdf` | SRCC and 95% CIs on GS-QA (3DGS) and NVS-QA (NeRF), same scenes |
-| `results/gsqa/gsqa_significance.csv`, `gsqa_rank_probability.csv` | paired bootstrap tests and rank probabilities on GS-QA |
-| `results/gsqa/summary.txt` | console summary, per-viewpoint SRCC, check against the authors' metric values |
-| `results/cgvqm_max/summary.txt` | CGVQM SRCC with mean vs max patch pooling |
-| `results/nvssqa/summary.txt` | NVS-SQA scene share, within-scene SRCC, refitted regression head |
-
-### Recomputing the metric scores (optional)
-
-1. Download the datasets: Explicit-NeRF-QA from its
-   [project page](https://github.com/YukeXing/Explicit-NeRF-QA) (folder with `MOS.xlsx` and
-   `Videos/`), and `git clone https://github.com/pedrogcmartin/NVS-QA`.
-   `git clone https://github.com/pedrogcmartin/GS-QA` for the 3DGS pilot.
-2. Create the two Python environments (Python 3.11.7, CUDA 12.1); ST-RRED needs an older NumPy:
-   ```
-   python -m venv envs/metrics && envs/metrics/bin/pip install -r environment/requirements-metrics.txt
-   python -m venv envs/strred  && envs/strred/bin/pip  install -r environment/requirements-strred.txt
-   ```
-3. `bash third_party/setup.sh` (CGVQM and VMAF at fixed commits; the `vmaf` command-line
-   tool and FFmpeg must be on `PATH`).
-4. Recompute everything and rebuild `data/` (about a day on one RTX 4090):
-   ```
-   PY=envs/metrics/bin/python PY_STRRED=envs/strred/bin/python \
-     bash run_all.sh full <Explicit-NeRF-QA dir> <NVS-QA dir> <GS-QA dir>
-   ```
-
 ## Pipeline
 
 | Step | Script | Notes |
